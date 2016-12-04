@@ -22,7 +22,7 @@
   </target>
 
   <target name="python">
-    <platform>python</platform>
+    <platform>game-python-pygame</platform>
   </target>
 
   <target name="csharp">

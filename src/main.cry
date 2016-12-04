@@ -1,9 +1,7 @@
 import Game;
-/*
 import Math;
 import Graphics2D;
 import Random;
-*/
 
 /*
 Mouse input example.
@@ -31,12 +29,14 @@ function get_color(colorId) {
 }
 
 // Build a 2D grid (list of lists)
-function make_grid(width, height, defaultValue) {
+function make_grid(width, height) {
     columns = [];
     for (x = 0; x < width; ++x) {
         column = [];
         for (y = 0; y < height; ++y) {
-            column.add(defaultValue);
+            prime = 1087 * x + 23 * y;
+            print(prime);
+            column.add( prime % 5 );
         }
         columns.add(column);
     }
@@ -44,22 +44,31 @@ function make_grid(width, height, defaultValue) {
 }
 
 function main() {
-    // window = new Game.GameWindow("Mouse testing", FPS, SCREEN_WIDTH, SCREEN_HEIGHT);
+    window = new Game.GameWindow("Mouse testing", FPS, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     tile_size = 20;
+    delt = 1/(1.0 * FPS);
 
     // Create a grid to cover the screen where each square is the size of tile_size
     grid_width = SCREEN_WIDTH / tile_size;
     grid_height = SCREEN_HEIGHT / tile_size;
-    grid = make_grid(grid_width, grid_height, BLACK);
+    grid = make_grid(grid_width, grid_height);
+    windmills = [
+        new Windmill( 100, 100, 50, 4 ),
+        new Windmill( 250, 300, 75, 5 ),
+        new Windmill( 400, 260, 40, 3 ),
+        new Windmill( 50, 400, 20, 4 ),
+        new Windmill( 300, 140, 50, 3 ),
+    ];
+
+    hugh = new Hugh();
 
     mouse_col = -1;
     mouse_row = -1;
-    
+
     mouse_state = 0;
 
     // Game loop
-/*
     while (true) {
 
         events = window.pumpEvents();
@@ -82,7 +91,6 @@ function main() {
                 mouse_state = mouse_state ^ 2;
 
 
-            }
         }
 
         // Follow the cursor and change the color of that tile.
@@ -91,14 +99,15 @@ function main() {
         // Otherwise, change the tile to gray.
         switch (mouse_state) {
             case 1: color = BLUE;
-            break;
+                    break;
             case 2: color = PURPLE;
-            break;
+                    break;
             default: color = GRAY;
+                     break;
         }
         if (mouse_col >= 0 && mouse_col < grid_width &&
-            mouse_row >= 0 && mouse_row < grid_height) {
-            grid[mouse_col][mouse_row] = color;
+                mouse_row >= 0 && mouse_row < grid_height) {
+            // grid[mouse_col][mouse_row] = color;
         }
 
         // Set the background to black
@@ -117,19 +126,23 @@ function main() {
 
                 // Draw the color
                 Graphics2D.Draw.rectangle(
-                    col * tile_size,
-                    row * tile_size,
-                    tile_size,
-                    tile_size,
-                    rgb[0],
-                    rgb[1],
-                    rgb[2]
-                );
+                        col * tile_size,
+                        row * tile_size,
+                        tile_size,
+                        tile_size,
+                        rgb[0],
+                        rgb[1],
+                        rgb[2]
+                        );
             }
+            // End the frame
         }
 
-        // End the frame
+        for (windmill : windmills) {
+            windmill.update(delt);
+        }
+        hugh.update(delt);
+
         window.clockTick();
     }
-        */
 }

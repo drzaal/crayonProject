@@ -1,0 +1,30 @@
+import Game;
+import Graphics2D;
+
+class TitleCard {
+    field hover;
+    field menu_items = [];
+
+    field splash = [];
+
+    constructor() {
+        this.menu_items
+            .add(1)
+            .add(1)
+            .add(1);
+
+    }
+
+    function update(delt, event) {
+        if (event && event.type == EventType.MOUSE_MOVE) {
+            for (menu_item : menu_items) {
+                if (menu_item.checkBounds(event.x, event.y)) {
+                    menu_item.setHover();
+                } else {
+                    menu_item.unsetHover();
+                }
+            }
+        }
+
+    }
+}

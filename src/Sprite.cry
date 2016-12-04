@@ -1,0 +1,78 @@
+import Game;
+import Graphics2D;
+
+class Sprite {
+    field frm = 0;
+    field t = 0.0;
+    field i = 0;
+    field j = 0;
+
+    field imax = 1;
+    field jmax = 1;
+
+    field x = 0.0;
+    field y = 0.0;
+
+    field w = 0;
+    field h = 0;
+
+    field tex_w;
+    field tex_h;
+
+    field v = 0.0;
+
+    field texture;
+
+    constructor(fileName, w, h) {
+        this.frm = 0;
+        this.t = 0.0;
+        this.i = 0;
+        this.j = 0;
+
+        this.x = 80.0;
+        this.y = 0.0;
+
+        splash_resource = ImageLoader.loadFromResources("assets/" + fileName);
+
+        tex_w = splash_resource.getWidth();
+        tex_h = splash_resource.getHeight();
+
+        this.imax = tex_w / w;
+        this.jmax = tex_h / h;
+
+        this.texture = Graphics2D.GraphicsTexture.load(splash_resource);
+
+    }
+
+    function update(delt) {
+
+        // Adjust sprite frame rate based on V
+        theta = delt * ( this.v * V_THETA + IDLE_THETA );
+
+        this.t+= theta;
+        if (this.t >= 1) {
+            ++this.frm;
+            --this.t;
+            if (this.frm >= this.imax*this.jmax) this.frm = 0; 
+            this.i = this.frm % this.imax;
+            this.j = this.frm / this.jmax;
+        }
+
+        this.x += this.v;
+
+        this.texture.drawRegionStretched(
+            this.x,
+            300,
+            8*W,
+            8*H,
+            this.i * W,
+            this.j * H,
+            W,
+            H
+        );
+    }
+
+    function accel(a) {
+        this.v += a;
+    }
+}

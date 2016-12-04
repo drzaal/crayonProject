@@ -1,0 +1,62 @@
+import Game;
+import Math;
+import Graphics2D;
+
+class Windmill {
+    field x;
+    field y;
+
+    field spokes;
+    field r;
+
+    field theta;
+    field omega;
+
+    constructor(x, y, r, spokes) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.spokes = spokes;
+
+        this.theta = 0.0;
+        this.omega = 0.25;
+    }
+
+    function update(delta) {
+        this.theta += this.omega * delta;
+        if (this.theta > 1.0) this.theta -= 1.0;
+
+        Graphics2D.Draw.quad(
+            this.x - this.r/4,
+            this.y,
+            this.x + this.r/4,
+            this.y,
+            this.x - this.r/2,
+            480,
+            this.x + this.r/2,
+            480,
+            155,
+            80,
+            80,
+            155
+        );
+
+        for (i=0;i<this.spokes;++i) {
+            angle = 2 * Math.PI * (1.0 * i / this.spokes + this.theta);
+
+            Graphics2D.Draw.line(
+                this.x,
+                this.y,
+                this.x + Math.floor(Math.cos(angle) * this.r),
+                this.y + Math.floor(Math.sin(angle) * this.r),
+                5,
+                80,
+                80,
+                80,
+                155
+            );
+        }
+
+
+    }
+}
